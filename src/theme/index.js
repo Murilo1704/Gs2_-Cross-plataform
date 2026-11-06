@@ -1,4 +1,4 @@
-// Identidade visual do "Territorio Vivo".
+// Identidade visual do "Território Vivo".
 // Paleta inspirada no tema CitizenTech (verde campo + laranja cidade),
 // com contraste AA verificado para texto sobre as superficies principais.
 
@@ -63,7 +63,7 @@ export const MIN_TOUCH = 48;
 
 export const risk = {
   baixo: { label: 'Risco baixo', color: colors.riskLow, bg: colors.riskLowBg, icon: 'checkmark-circle' },
-  medio: { label: 'Risco medio', color: colors.riskMedium, bg: colors.riskMediumBg, icon: 'alert-circle' },
+  medio: { label: 'Risco médio', color: colors.riskMedium, bg: colors.riskMediumBg, icon: 'alert-circle' },
   alto: { label: 'Risco alto', color: colors.riskHigh, bg: colors.riskHighBg, icon: 'warning' },
 };
 

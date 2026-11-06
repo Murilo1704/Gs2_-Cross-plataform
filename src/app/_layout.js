@@ -1,10 +1,11 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { AppProvider } from '../state/AppContext';
 import { colors } from '../theme';
 
 export default function RootLayout() {
   return (
-    <>
+    <AppProvider>
       <StatusBar style="light" />
       <Stack
         screenOptions={{
@@ -14,8 +15,8 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: colors.background },
         }}
       >
-        <Stack.Screen name="index" options={{ title: 'Territorio Vivo' }} />
+        <Stack.Screen name="index" options={{ title: 'Território Vivo' }} />
       </Stack>
-    </>
+    </AppProvider>
   );
 }

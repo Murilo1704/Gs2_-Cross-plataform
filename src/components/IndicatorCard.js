@@ -15,7 +15,7 @@ export default function IndicatorCard({ icon, label, value, unit, trend, goodWhe
   const trendText = hasTrend ? `${up ? '+' : ''}${trend.toFixed(1)}%` : '--';
 
   const a11y = `${label}: ${value} ${unit ?? ''}. ${
-    hasTrend ? `Variacao de ${trendText} em relacao a semana anterior.` : ''
+    hasTrend ? `Variação de ${trendText} em relação à semana anterior.` : ''
   }`;
 
   return (
