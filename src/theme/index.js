@@ -26,12 +26,18 @@ export const colors = {
   riskHigh: '#B3261E',
   riskHighBg: '#FBE4E2',
 
-  // Series dos graficos
+  // Series dos graficos. Paleta validada (contraste >= 3:1 sobre a superficie,
+  // separacao para daltonismo deltaE >= 8 entre cores vizinhas).
   water: '#1E6FA8',
-  energy: '#C98A00',
+  energy: '#A87300',
   waste: '#6B4E9B',
-  services: '#1F5F4A',
+  services: '#0E8064',
   climate: '#C4501A',
+  rain: '#1E6FA8',
+
+  // Elementos de apoio dos graficos (eixos e grades discretos)
+  chartGrid: '#E6E9E3',
+  chartAxis: '#8A938D',
 };
 
 export const spacing = {
