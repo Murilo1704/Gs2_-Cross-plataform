@@ -9,6 +9,7 @@ import {
   DataGate,
   DataSourceNote,
   EmptyState,
+  HeroHeader,
   Screen,
   TerritorySelector,
 } from '../../components';
@@ -25,7 +26,7 @@ const FILTERS = [
 // Lista de alertas preditivos, ordenada por risco e confianca.
 export default function Alerts() {
   const router = useRouter();
-  const { state, territory, refresh } = useApp();
+  const { state, territory, activeAlerts, refresh } = useApp();
   const { dataset, alerts, status } = state;
   const [filter, setFilter] = useState('todos');
 
@@ -34,9 +35,12 @@ export default function Alerts() {
 
   return (
     <Screen onRefresh={refresh} refreshing={status === 'loading' && !!dataset}>
-      <AppText variant="subtitle" accessibilityRole="header">
-        {territory.name}
-      </AppText>
+      <HeroHeader
+        eyebrow="Antecipar problemas"
+        icon="notifications"
+        title={territory.name}
+        subtitle={`${activeAlerts.length} alerta(s) ativo(s) de ${alerts.length} temas avaliados`}
+      />
       <TerritorySelector />
 
       <DataGate>

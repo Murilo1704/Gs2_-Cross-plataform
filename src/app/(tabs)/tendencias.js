@@ -8,6 +8,7 @@ import {
   ChipGroup,
   DataGate,
   DataSourceNote,
+  HeroHeader,
   Screen,
   SectionHeader,
   TerritorySelector,
@@ -42,9 +43,12 @@ export default function Trends() {
 
   return (
     <Screen onRefresh={refresh} refreshing={status === 'loading' && !!dataset}>
-      <AppText variant="subtitle" accessibilityRole="header">
-        {territory.name}
-      </AppText>
+      <HeroHeader
+        eyebrow="Séries e previsões"
+        icon="trending-up"
+        title={territory.name}
+        subtitle="14 dias observados + 7 dias previstos por tema"
+      />
       <TerritorySelector />
 
       <DataGate>

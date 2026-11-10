@@ -1,10 +1,15 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { colors, radius, spacing } from '../theme';
+import { useSettings } from '../state/AppContext';
+import { colors, highContrast, radius, shadow, spacing } from '../theme';
 
 /**
  * Superficie base. Se receber onPress vira botao acessivel.
+ * Com "alto contraste" ativo, a borda fica escura e mais grossa.
  */
 export default function Card({ children, style, onPress, accessibilityLabel, accessibilityHint }) {
+  const { highContrast: hc } = useSettings();
+  const base = [styles.card, hc && styles.contrast];
+
   if (onPress) {
     return (
       <Pressable
@@ -12,25 +17,25 @@ export default function Card({ children, style, onPress, accessibilityLabel, acc
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
         accessibilityHint={accessibilityHint}
-        style={({ pressed }) => [styles.card, pressed && styles.pressed, style]}
+        style={({ pressed }) => [base, pressed && styles.pressed, style]}
       >
         {children}
       </Pressable>
     );
   }
-  return <View style={[styles.card, style]}>{children}</View>;
+  return <View style={[base, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.md,
     marginBottom: spacing.md,
+    ...shadow.card,
   },
-  pressed: {
-    opacity: 0.85,
-  },
+  contrast: { borderColor: highContrast.border, borderWidth: 2 },
+  pressed: { opacity: 0.88, transform: [{ scale: 0.99 }] },
 });

@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   ConfidenceMeter,
+  DecisionCard,
   EmptyState,
   RiskBadge,
   Screen,
@@ -70,6 +71,7 @@ export default function AlertDetail() {
   }
 
   const domain = DOMAINS[alert.domain];
+  const decisions = state.decisions.filter((d) => d.alertId === alert.id);
   const fieldKey = ALERT_FIELD[alert.key];
   const field = FIELDS[fieldKey];
 
@@ -147,6 +149,21 @@ export default function AlertDetail() {
       <Card>
         <BulletList items={alert.actions} icon="checkbox-outline" iconColor={colors.primary} iconSize={16} />
       </Card>
+
+      <SectionHeader
+        title="Decisão do gestor"
+        subtitle={decisions.length ? `${decisions.length} registro(s) para este alerta` : 'Nenhuma decisão registrada ainda'}
+      />
+      {decisions.map((d) => (
+        <DecisionCard key={d.id} decision={d} showAlert={false} />
+      ))}
+      <Button
+        title={decisions.length ? 'Registrar nova decisão' : 'Registrar decisão'}
+        icon="create"
+        variant={alert.requiresHumanDecision && !decisions.length ? 'accent' : 'outline'}
+        onPress={() => router.push({ pathname: '/decisao/[alertId]', params: { alertId: alert.id } })}
+        accessibilityHint="Abre o formulário para documentar a decisão sobre este alerta"
+      />
 
       <SectionHeader title="Modelo e fontes" />
       <Card>

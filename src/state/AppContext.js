@@ -1,9 +1,9 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getTerritory } from '../data/territories';
 import { isActiveAlert } from '../engine/alerts';
 import { loadTerritoryData } from '../services/territoryService';
 import { clearAllAppData, getJSON, KEYS, setJSON } from '../services/storage';
-import { appReducer, initialState } from './reducer';
+import { appReducer, DEFAULT_SETTINGS, initialState } from './reducer';
 
 const AppContext = createContext(null);
 
@@ -50,9 +50,12 @@ export function AppProvider({ children }) {
     }
   }, [state.territoryId]);
 
+  // resetCount forca um novo carregamento depois de "Apagar todos os dados",
+  // mesmo quando o territorio padrao ja era o selecionado.
+  const [resetCount, setResetCount] = useState(0);
   useEffect(() => {
     if (state.hydrated) refresh();
-  }, [state.hydrated, refresh]);
+  }, [state.hydrated, refresh, resetCount]);
 
   const actions = useMemo(
     () => ({
@@ -68,6 +71,7 @@ export function AppProvider({ children }) {
       clearAllData: async () => {
         await clearAllAppData();
         dispatch({ type: 'RESET' });
+        setResetCount((n) => n + 1);
       },
     }),
     [refresh]
@@ -80,6 +84,15 @@ export function AppProvider({ children }) {
   }, [state, actions]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+/**
+ * Ajustes de acessibilidade para os componentes visuais.
+ * Seguro fora do provider (retorna os padroes).
+ */
+export function useSettings() {
+  const ctx = useContext(AppContext);
+  return ctx?.state.settings ?? DEFAULT_SETTINGS;
 }
 
 export function useApp() {

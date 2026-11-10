@@ -10,6 +10,7 @@ import {
   DataGate,
   DataSourceNote,
   EmptyState,
+  HeroHeader,
   IndicatorCard,
   Screen,
   SectionHeader,
@@ -55,17 +56,28 @@ export default function Dashboard() {
   const router = useRouter();
   const { state, territory, activeAlerts, refresh } = useApp();
   const { dataset, alerts, status } = state;
+  const decided = new Set(state.decisions.map((d) => d.alertId));
+  const pending = activeAlerts.filter((a) => !decided.has(a.id)).length;
   const ind = dataset?.indicators;
   const services = FIELDS.services;
 
   return (
     <Screen onRefresh={refresh} refreshing={status === 'loading' && !!dataset}>
-      <AppText variant="title" accessibilityRole="header">
-        {territory.name}
-      </AppText>
-      <AppText color={colors.textMuted}>
-        {territory.type} · {formatNumber(territory.population)} habitantes (aprox.)
-      </AppText>
+      <HeroHeader
+        eyebrow="Central de decisões"
+        icon="pulse"
+        title={territory.name}
+        subtitle={`${territory.type} · ${formatNumber(territory.population)} habitantes (aprox.)`}
+      >
+        {dataset ? (
+          <>
+            <AppText variant="caption" color={colors.primaryLight} style={styles.heroLabel}>
+              Situação prevista para os próximos 7 dias ({alerts.length} temas)
+            </AppText>
+            <RiskSummary alerts={alerts} />
+          </>
+        ) : null}
+      </HeroHeader>
 
       <TerritorySelector />
 
@@ -74,8 +86,27 @@ export default function Dashboard() {
           <>
             <DataSourceNote dataset={dataset} />
 
-            <SectionHeader title="Situação dos próximos 7 dias" subtitle={`${alerts.length} temas avaliados`} />
-            <RiskSummary alerts={alerts} />
+            {pending ? (
+              <Card
+                onPress={() => router.push('/decisoes')}
+                style={styles.pendingCard}
+                accessibilityLabel={`${pending} alerta(s) aguardando decisão do gestor`}
+                accessibilityHint="Abre a aba Decisões"
+              >
+                <View style={styles.pendingRow}>
+                  <View style={styles.pendingIcon}>
+                    <Ionicons name="people" size={20} color={colors.textOnPrimary} />
+                  </View>
+                  <View style={styles.flex}>
+                    <AppText variant="label">{pending} alerta(s) aguardando sua decisão</AppText>
+                    <AppText variant="caption" color={colors.textMuted}>
+                      Avalie as evidências e registre o que será feito.
+                    </AppText>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={colors.accent} />
+                </View>
+              </Card>
+            ) : null}
 
             <SectionHeader title="Indicadores da semana" subtitle="Média dos últimos 7 dias vs. semana anterior" />
             <View style={styles.grid}>
@@ -147,6 +178,17 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -spacing.xs },
   riskRow: { flexDirection: 'row', gap: spacing.sm },
   riskBox: { flex: 1, alignItems: 'center', padding: spacing.sm, borderRadius: radius.md },
+  heroLabel: { marginBottom: spacing.sm, fontWeight: '600' },
+  pendingCard: { borderColor: colors.accent, borderWidth: 1.5, backgroundColor: colors.accentLight },
+  pendingRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  pendingIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.pill,
+    backgroundColor: colors.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   bold: { fontWeight: '700', textAlign: 'center' },
   smallBtn: { minHeight: 40, paddingHorizontal: spacing.md },
   disclaimer: {

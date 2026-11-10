@@ -51,7 +51,8 @@ export const spacing = {
 export const radius = {
   sm: 8,
   md: 12,
-  lg: 20,
+  lg: 16,
+  xl: 24,
   pill: 999,
 };
 
@@ -73,5 +74,23 @@ export const risk = {
   alto: { label: 'Risco alto', color: colors.riskHigh, bg: colors.riskHighBg, icon: 'warning' },
 };
 
-export const theme = { colors, spacing, radius, typography, risk, MIN_TOUCH };
+// Sombra suave das superficies (cartoes). Android usa elevation; iOS/web usam shadow*.
+export const shadow = {
+  card: {
+    shadowColor: '#143F31',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 2,
+  },
+};
+
+// Ajustes de acessibilidade escolhidos pelo usuario (tela Ajustes).
+export const LARGE_TEXT_SCALE = 1.2;
+export const highContrast = {
+  border: '#1B1F1D',
+  textMuted: '#1B1F1D',
+};
+
+export const theme = { colors, spacing, radius, typography, risk, shadow, MIN_TOUCH };
 export default theme;

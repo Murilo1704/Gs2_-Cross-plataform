@@ -13,12 +13,14 @@ export default function RootLayout() {
           headerStyle: { backgroundColor: colors.primary },
           headerTintColor: colors.textOnPrimary,
           headerTitleStyle: { fontWeight: '700' },
+          headerShadowVisible: false,
           headerBackTitle: 'Voltar',
           contentStyle: { backgroundColor: colors.background },
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="alerta/[id]" options={{ title: 'Detalhe do alerta' }} />
+        <Stack.Screen name="decisao/[alertId]" options={{ title: 'Registrar decisão', presentation: 'modal' }} />
       </Stack>
     </AppProvider>
   );
